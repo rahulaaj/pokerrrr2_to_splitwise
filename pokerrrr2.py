@@ -2,8 +2,7 @@ from splitwise import Splitwise
 from splitwise.expense import Expense
 from splitwise.user import ExpenseUser
 from pathlib import Path
-from collections import OrderedDict
-from requests_oauthlib import OAuth1, OAuth2Session, OAuth2
+from requests_oauthlib import OAuth1
 from requests import Request, sessions
 import datetime
 import requests
@@ -15,23 +14,25 @@ SPLITWISE_BASE_URL = "https://secure.splitwise.com/"
 SPLITWISE_VERSION = "v3.0"
 CREATE_EXPENSE_URL = SPLITWISE_BASE_URL + "api/" + SPLITWISE_VERSION + "/create_expense"
 
-# Register and generate keys for splitwise https://secure.splitwise.com/oauth_clients 
-consumer_key = "<obfuscated>"
-consumer_secret = "<obfuscated>"
+# Consumer keys for splitwise
+consumer_key = ""
+consumer_secret = ""
 
-# Generate oauth1 token using https://splitwise.readthedocs.io/en/latest/user/authenticate.html
-oauth_token = "<obfuscated>"
-oauth_token_secret = "<obfuscated>"
-access_token = {'oauth_token': "<obfuscated>", 'oauth_token_secret': "<obfuscated>"}
+# Access token for splitwise
+access_token = {'oauth_token': '', 'oauth_token_secret': ''}
 auth = OAuth1(consumer_key, client_secret=consumer_secret, resource_owner_key=access_token['oauth_token'], resource_owner_secret=access_token['oauth_token_secret'])
+
 # Splitwise group id e.g. "192136318"
 group_id = "192136318"
 
-# Create member dictionary of {member_id_pokerrr2: member_id_splitwise} e.g. {"#AB0X7": 6167766}
-members = {"#AB0X7": 6167766}
+# Create member dictionary of {"member_id_pokerrrr2": member_id_splitwise} e.g. {"#AB0X7": 6167766, "#X4S0D": 31283953}
+members = {"#AB0X7": 6167766, "#X4S0D": 31283953}
 
-# Generate OCR API Key at https://ocr.space/OCRAPI "Register here for your free OCR API key"
-ocr_api_key = '<obfuscated>'
+# OCR API key
+ocr_api_key = ""
+
+# Screenshot directory on mobile
+dirpath = "/storage/emulated/0/DCIM/Screenshots/"
 
 def get_profit(text):
     word_list = text.split("\t")
@@ -66,8 +67,7 @@ def setUserArray(users, user_array):
             user_array["users__" + str(count) + "__" + gen_key] = user_dict[key]
 
 # Convert image to text
-dirpath = "/storage/emulated/0/DCIM/Screenshots/"
-# Get latest screenshot from above directory
+# Get latest screenshot from dirpath directory
 results = str(sorted(Path(dirpath).iterdir(), key=os.path.getmtime, reverse=True)[0])
 payload = {'apikey': ocr_api_key, 'scale': True, 'isTable': True,}
 with open(results, 'rb') as f:
