@@ -16,11 +16,23 @@ consumer_key = "<obfuscated>"
 consumer_secret = "<obfuscated>"
 
 #### Generate oauth1 token using https://splitwise.readthedocs.io/en/latest/user/authenticate.html
+s = Splitwise(consumer_key, consumer_secret)
+\
+url, oauth_token_secret = s.getAuthorizeURL()
+\
+Login to splitwise in a browser, run above url in the browser and authorize access to your account
+\
+You will find a oauth_verifier after you authorize the account "Click to show out of band authentication information"
+\
+oauth_verifier = "<obfuscated>"
+\
+Take oauth_token from authorize url query parameter
+\
 oauth_token = "<obfuscated>"
 \
-oauth_token_secret = "<obfuscated>"
+access_token = s.getAccessToken(oauth_token, oauth_token_secret, oauth_verifier)
 \
-access_token = {'oauth_token': "<obfuscated>", 'oauth_token_secret': "<obfuscated>"}
+save this access_token for future re-use access_token = {'oauth_token': "<obfuscated>", 'oauth_token_secret': "<obfuscated>"}
 
 #### Splitwise group id e.g. "192136318"
 group_id = "192136318"
