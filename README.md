@@ -1,5 +1,6 @@
 # pokerrrr2_to_splitwise
-Converts pokerrr2 game screenshot to a splitwise expense on android
+Converts pokerrrr2 game screenshot to a splitwise expense on android
+![Pokerrrr 2 Screenshot](screenshot.jpeg)
 
 ## Docs
 https://github.com/namaggarwal/splitwise
