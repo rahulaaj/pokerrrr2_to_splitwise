@@ -81,6 +81,7 @@ for member in results_dict:
 expense.setCost(str(total))
 date = (datetime.date.today()).strftime("%d %B")
 expense.setDescription(date)
+expense.setCategory(Category({"id": 20, "name": "Games"}))
 expense.setReceipt(results)
 nExpense, errors = s.createExpense(expense)
 if errors:
