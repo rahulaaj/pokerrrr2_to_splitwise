@@ -86,3 +86,6 @@ expense.setReceipt(results)
 nExpense, errors = s.createExpense(expense)
 if errors:
     print(errors.getErrors())
+else:
+    os.remove(results)
+
