@@ -31,12 +31,34 @@ results = str(sorted(Path(dirpath).iterdir(), key=os.path.getmtime, reverse=True
 
 def get_profit(text):
     word_list = text.split("\t")
-    profit = "0"
+    profit = None
     for word in word_list:
-        if word.startswith("+") or word.startswith("-"):
+        if word.startswith("+") or word.startswith("-") or word == "0" or word == "O" or word == "o":
             profit = word
             break
+    # Not able to parse profit in image
+    if profit is None:
+        return None
     return int(profit.replace(",", "").replace(".", "").replace("o", "0").replace("O", "0"))
+
+def get_frequency(elem, list):
+    count = 0
+    for element in list:
+        if elem == element:
+            count = count + 1
+    return count
+
+def deduce_profit_of_none_player(results_dict):
+    total = 0
+    for member in results_dict:
+        if results_dict[member] is not None:
+            total = total + results_dict[member]
+    profit = -total
+    for member in results_dict:
+        if results_dict[member] is None:
+            results_dict[member] = profit
+            break
+    return results_dict
 
 def get_results_dict(scale = True):
     payload = {'apikey': ocr_api_key, 'scale': scale, 'isTable': True,}
@@ -51,12 +73,14 @@ def get_results_dict(scale = True):
             word = word_list[-2]
             if word.startswith("#"):
                 results_dict[word] = get_profit(text[i-2] + text[i-1])
+        if get_frequency(None, results_dict.values()) == 1:
+            results_dict = deduce_profit_of_none_player(results_dict)
         print(results_dict)
         return(results_dict)
 
 # Convert image to text
 results_dict = get_results_dict()
-if (sum(results_dict.values()) != 0):
+if get_frequency(None, results_dict.values()) != 0:
     # Try with scale as False
     results_dict = get_results_dict(False)
 
@@ -88,4 +112,3 @@ if errors:
     print(errors.getErrors())
 else:
     os.remove(results)
-
