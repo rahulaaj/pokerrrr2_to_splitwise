@@ -80,7 +80,7 @@ def get_results_dict(scale = True):
 
 # Convert image to text
 results_dict = get_results_dict()
-if get_frequency(None, results_dict.values()) != 0:
+if get_frequency(None, results_dict.values()) != 0 or sum(results_dict.values()) != 0:
     # Try with scale as False
     results_dict = get_results_dict(False)
 
