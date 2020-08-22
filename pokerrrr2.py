@@ -39,7 +39,7 @@ def get_profit(text):
     # Not able to parse profit in image
     if profit is None:
         return None
-    return int(profit.replace(",", "").replace(".", "").replace("o", "0").replace("O", "0"))
+    return int(profit.replace(",", "").replace(".", "").replace("o", "0").replace("O", "0").replace(" ", ""))
 
 def get_frequency(elem, list):
     count = 0
