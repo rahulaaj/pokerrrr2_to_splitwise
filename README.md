@@ -8,7 +8,7 @@ https://github.com/namaggarwal/splitwise
 ## Deps
 Install qpython3 app from playstore https://play.google.com/store/apps/details?id=org.qpython.qpy3 (you can use any other python engine)\
 Install splitwise package :\
-$ pip install splitwise
+$ pip install splitwise>=2.2.0
 
 ## Edit the following paramters before running:
 #### Register and generate keys for splitwise https://secure.splitwise.com/oauth_clients
