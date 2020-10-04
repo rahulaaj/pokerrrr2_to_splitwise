@@ -91,6 +91,8 @@ expense = Expense()
 expense.setGroupId(group_id)
 total = 0
 for member in results_dict:
+    if not member in members:
+        continue
     profit = results_dict[member]
     user1 = ExpenseUser()
     user1.setId(members[member])
