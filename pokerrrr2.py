@@ -34,12 +34,9 @@ def get_profit(text):
     profit = None
     for word in word_list:
         if word.startswith("+") or word.startswith("-") or word == "0" or word == "O" or word == "o":
-            profit = word
+            profit = int(word.replace(",", "").replace(".", "").replace("o", "0").replace("O", "0").replace(" ", ""))
             break
-    # Not able to parse profit in image
-    if profit is None:
-        return None
-    return int(profit.replace(",", "").replace(".", "").replace("o", "0").replace("O", "0").replace(" ", ""))
+    return profit
 
 def get_frequency(elem, list):
     count = 0
@@ -60,6 +57,14 @@ def deduce_profit_of_none_player(results_dict):
             break
     return results_dict
 
+def get_member_from_id(word):
+    if word in members:
+        return word
+    for id in members:
+        if id.startswith(word):
+            return id
+    return word
+
 def get_results_dict(scale = True):
     payload = {'apikey': ocr_api_key, 'scale': scale, 'isTable': True,}
     with open(results, 'rb') as f:
@@ -71,8 +76,12 @@ def get_results_dict(scale = True):
         for i in range(0, len(text)):
             word_list = text[i].split("\t")
             word = word_list[-2]
-            if word.startswith("#"):
-                results_dict[word] = get_profit(text[i-2] + text[i-1])
+            word = word.replace(" ", "", 2)
+            # Player Id
+            if word.startswith("#") and len(word) <= 6:
+                word = word.replace("o", "0").replace("O", "0")
+                member = get_member_from_id(word)
+                results_dict[member] = get_profit(text[i-2] + text[i-1])
         if get_frequency(None, results_dict.values()) == 1:
             results_dict = deduce_profit_of_none_player(results_dict)
         print(results_dict)
@@ -80,7 +89,7 @@ def get_results_dict(scale = True):
 
 # Convert image to text
 results_dict = get_results_dict()
-if get_frequency(None, results_dict.values()) != 0 or sum(results_dict.values()) != 0:
+if get_frequency(None, results_dict.values()) != 0 or sum(results_dict.values()) != 0 :
     # Try with scale as False
     results_dict = get_results_dict(False)
 
